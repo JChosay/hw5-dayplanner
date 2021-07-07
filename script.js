@@ -93,7 +93,7 @@ function blockPop(){
                 ]
                 var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
                 memoryStamp = memoryStorage.concat(newTask);
-                localStorage.setItem(memoryStorage,JSON.stringify(memoryStorage));
+                localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
                 console.log("Stringify called inside the else loop");
             }
         })
