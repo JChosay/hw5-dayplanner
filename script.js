@@ -52,43 +52,51 @@ function blockPop(){
 
         var threeDiv = document.createElement('div');
             threeDiv.setAttribute('class','input-group-append');
+        
         var saveButtons = document.createElement('button');
             saveButtons.setAttribute('class','btn btn-outline-secondary saveBtn');
             saveButtons.setAttribute('type','button');
             saveButtons.setAttribute('id', timeblockIndex+"block");
-            
-            saveButtons.addEventListener('click', function(){
-                var slotIndex = parseInt(this.id,10);
-                    console.log(slotIndex);
-                var slotContent = document.getElementById(slotIndex);
-                var slotContentText = slotContent.value;
-                    console.log(slotContentText);
 
-                var memoryStamp = JSON.parse(localStorage.getItem("memoryStamp"));
-                    
-                if(memoryStamp===null){
-                    memoryStamp = [
-                        {
-                        date: rightNow,
-                        time: slotIndex,
-                        message: slotContentText
-                        }
-                    ]
-                    window.localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
-                }else{
-                    var newTask = [
-                        {
-                        date: rightNow,
-                        time: slotIndex,
-                        message: slotContentText
-                        }
-                    ]
-                    var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
-                    memoryStamp = memoryStorage.concat(newTask);
-                    localStorage.setItem(memoryStorage,JSON.stringify(memoryStorage));
-                }
+        var memoryStamp = JSON.parse(localStorage.getItem("memoryStamp"));
+            console.log(timeblockIndex);
+            // console.log(memoryStamp.time);
+            console.log(timeblockIndex==memoryStamp);
+
+   
+        saveButtons.addEventListener('click', function(){
+            var slotIndex = parseInt(this.id,10);
+                console.log(slotIndex);
+            var slotContent = document.getElementById(slotIndex);
+            var slotContentText = slotContent.value;
+                console.log(slotContentText);
+
+            var memoryStamp = JSON.parse(localStorage.getItem("memoryStamp"));
+                
+            if(memoryStamp===null){
+                memoryStamp = [
+                    {
+                    date: rightNow,
+                    time: slotIndex,
+                    message: slotContentText
+                    }
+                ]
                 window.localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
-            })
+                console.log("Stringify called in the Null loop (ls is empty).")
+            }else{
+                var newTask = [
+                    {
+                    date: rightNow,
+                    time: slotIndex,
+                    message: slotContentText
+                    }
+                ]
+                var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
+                memoryStamp = memoryStorage.concat(newTask);
+                localStorage.setItem(memoryStorage,JSON.stringify(memoryStorage));
+                console.log("Stringify called inside the else loop");
+            }
+        })
 
         var buttonText = document.createTextNode('Save');
             saveButtons.appendChild(buttonText);
