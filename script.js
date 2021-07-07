@@ -1,3 +1,4 @@
+//declare a whole bunch of global variables
 var timeblockIndex = 7;
 var container = document.getElementById('container');
 var weekday = moment().format('dddd');
@@ -10,6 +11,7 @@ var currentDay = document.getElementById('currentDay');
 var timeBlocks = document.getElementsByClassName('form-control');
 var buttons = document.getElementsByClassName('btn btn-outline-secondary saveBtn');
 
+//populates the html container with the timeblocks to hold content
 function blockPop(){
     for (var i=1; i<15; i++){
         
@@ -21,6 +23,7 @@ function blockPop(){
             oneSpan.setAttribute('class','input-group-text');
             oneSpan.setAttribute('id','inputGroup-sizing-lg');
 
+        // Adds the correct time text for each timeblock as the function iterates            
         if (timeblockIndex < 12){
             var timeText = document.createTextNode(timeblockIndex+" AM");
         }else if (timeblockIndex == 12){
@@ -57,19 +60,12 @@ function blockPop(){
             saveButtons.setAttribute('class','btn btn-outline-secondary saveBtn');
             saveButtons.setAttribute('type','button');
             saveButtons.setAttribute('id', timeblockIndex+"block");
-
-        var memoryStamp = JSON.parse(localStorage.getItem("memoryStamp"));
-            console.log(timeblockIndex);
-            // console.log(memoryStamp.time);
-            console.log(timeblockIndex==memoryStamp);
-
    
-        saveButtons.addEventListener('click', function(){
+            //button click function so save the text in the input field
+            saveButtons.addEventListener('click', function(){
             var slotIndex = parseInt(this.id,10);
-                console.log(slotIndex);
             var slotContent = document.getElementById(slotIndex);
             var slotContentText = slotContent.value;
-                console.log(slotContentText);
 
             var memoryStamp = JSON.parse(localStorage.getItem("memoryStamp"));
                 
@@ -82,7 +78,6 @@ function blockPop(){
                     }
                 ]
                 window.localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
-                console.log("Stringify called in the Null loop (ls is empty).")
             }else{
                 var newTask = [
                     {
@@ -94,7 +89,6 @@ function blockPop(){
                 var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
                 memoryStamp = memoryStorage.concat(newTask);
                 localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
-                console.log("Stringify called inside the else loop");
             }
         })
 
@@ -124,7 +118,22 @@ function blockPop(){
                 grabbit.style.backgroundColor = "red";
         }
     }
+    var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
+    //finally, once everything has loaded, calls loadTasks if there is content in Local Storage.
+    if (memoryStorage!=null){
+        loadTasks();
+    }
 }
 
 blockPop();
 
+//function to load messages freom local Storage into the appropriate input field.
+function loadTasks(){
+    var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
+    for(var i=0; i<memoryStorage.length; i++){
+        var message = memoryStorage[i].message;
+        var hour = memoryStorage[i].time;
+        var preloadBlock = document.getElementById(hour);
+        preloadBlock.value = message;
+    }
+}
