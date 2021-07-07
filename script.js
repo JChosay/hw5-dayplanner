@@ -55,12 +55,39 @@ function blockPop(){
         var saveButtons = document.createElement('button');
             saveButtons.setAttribute('class','btn btn-outline-secondary saveBtn');
             saveButtons.setAttribute('type','button');
-            saveButtons.setAttribute('id', timeblockIndex);
-            var parsedIndex = parseInt(timeblockIndex,10);
-            console.log(parsedIndex);
+            saveButtons.setAttribute('id', timeblockIndex+"block");
             
             saveButtons.addEventListener('click', function(){
-                console.log(this.id);
+                var slotIndex = parseInt(this.id,10);
+                    console.log(slotIndex);
+                var slotContent = document.getElementById(slotIndex);
+                var slotContentText = slotContent.value;
+                    console.log(slotContentText);
+
+                var memoryStamp = JSON.parse(localStorage.getItem("memoryStamp"));
+                    
+                if(memoryStamp===null){
+                    memoryStamp = [
+                        {
+                        date: rightNow,
+                        time: slotIndex,
+                        message: slotContentText
+                        }
+                    ]
+                    window.localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
+                }else{
+                    var newTask = [
+                        {
+                        date: rightNow,
+                        time: slotIndex,
+                        message: slotContentText
+                        }
+                    ]
+                    var memoryStorage = JSON.parse(localStorage.getItem('memoryStamp'));
+                    memoryStamp = memoryStorage.concat(newTask);
+                    localStorage.setItem(memoryStorage,JSON.stringify(memoryStorage));
+                }
+                window.localStorage.setItem('memoryStamp',JSON.stringify(memoryStamp));
             })
 
         var buttonText = document.createTextNode('Save');
